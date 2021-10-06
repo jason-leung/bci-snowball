@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: b34bb8d463f930a4b848111e70e4a085
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - My Olivin
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: f03e9162f9ca7d14a851ea5727de3df0, type: 3}
+  - {fileID: 12800000, guid: 92807357e8541624599df8348102c019, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
