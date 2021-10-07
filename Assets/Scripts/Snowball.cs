@@ -31,6 +31,11 @@ public class Snowball : MonoBehaviour
             if (collisionObject.gameObject.tag == "Player" || ((collisionObject.gameObject.tag == "Snowball") && (otherPlayer.arrowState != "shoot")))
             {
                 otherPlayer.DeductHeart();
+                if (otherPlayer.numHearts > 0 )
+                {
+                    otherPlayer.animator.SetBool("isHurt", true);
+                    otherPlayer.ResetHurtAnimationCoroutine();
+                }
             }
 
             // Destroy snowball
@@ -41,6 +46,7 @@ public class Snowball : MonoBehaviour
 
             // Reset state
             currentPlayer.arrowState = "rotate";
+            currentPlayer.animator.SetBool("isThrowing", false);
             currentPlayer.CreateSnowball();
         }
     }

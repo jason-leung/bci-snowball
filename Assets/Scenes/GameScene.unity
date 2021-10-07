@@ -1657,6 +1657,7 @@ GameObject:
   - component: {fileID: 688929249}
   - component: {fileID: 688929248}
   - component: {fileID: 688929251}
+  - component: {fileID: 688929252}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Player
@@ -1677,8 +1678,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.05701065, y: 0.04131639}
-  m_Size: {x: 0.75586796, y: 1.1811507}
+  m_Offset: {x: -0.1, y: 0.63}
+  m_Size: {x: 0.85, y: 1.3}
   m_Direction: 0
 --- !u!212 &688929249
 SpriteRenderer:
@@ -1739,7 +1740,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 688929247}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.5, y: -2.86, z: 0}
+  m_LocalPosition: {x: -6.5, y: -3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1002025539}
@@ -1765,6 +1766,7 @@ MonoBehaviour:
   - {fileID: 1502535578}
   - {fileID: 1987699154}
   - {fileID: 477952733}
+  animator: {fileID: 688929252}
   arrow: {fileID: 1041066099}
   arrowState: rotate
   arrowRotateSpeed: 60
@@ -1782,6 +1784,25 @@ MonoBehaviour:
   forceMagnitude: 0
   forceDirection: 0
   gameOverText: {fileID: 448681945}
+--- !u!95 &688929252
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688929247}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c19aada144a8dfa48adc84d2502539ed, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &826930110
 GameObject:
   m_ObjectHideFlags: 0
@@ -2933,6 +2954,7 @@ GameObject:
   - component: {fileID: 1336968079}
   - component: {fileID: 1336968078}
   - component: {fileID: 1336968077}
+  - component: {fileID: 1336968080}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Player
@@ -2948,7 +2970,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1336968075}
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: 6.5, y: -2.86, z: 0}
+  m_LocalPosition: {x: 6.5, y: -3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1002025539}
@@ -2974,6 +2996,7 @@ MonoBehaviour:
   - {fileID: 190096870}
   - {fileID: 1533367088}
   - {fileID: 1075704048}
+  animator: {fileID: 1336968080}
   arrow: {fileID: 2137686742}
   arrowState: rotate
   arrowRotateSpeed: 60
@@ -3004,8 +3027,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.05701065, y: 0.04131639}
-  m_Size: {x: 0.75586796, y: 1.1811507}
+  m_Offset: {x: -0.1, y: 0.63}
+  m_Size: {x: 0.85, y: 1.3}
   m_Direction: 0
 --- !u!212 &1336968079
 SpriteRenderer:
@@ -3058,6 +3081,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1336968080
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1336968075}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 37a9730db9a8fef41a6e73fa24bc2bcd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1372064283
 GameObject:
   m_ObjectHideFlags: 0

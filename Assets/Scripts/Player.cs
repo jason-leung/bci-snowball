@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // user input
+    // player
     public KeyCode userKey;
     public int numHearts;
     public List<GameObject> hearts;
+    public Animator animator;
 
     // arrow
     public GameObject arrow;
@@ -40,6 +41,9 @@ public class Player : MonoBehaviour
         CreateSnowball();
         numHearts = 5;
         PlayerPrefs.SetInt("isGameOver", 0);
+        animator.SetBool("isThrowing", false);
+        animator.SetBool("isHurt", false);
+        animator.SetBool("playerLost", false);
     }
 
     // Update is called once per frame
@@ -56,7 +60,7 @@ public class Player : MonoBehaviour
         }
 
         // Update Snowball
-        if (arrowState != "shoot")
+        if (arrowState != "shoot" && PlayerPrefs.GetInt("isGameOver") == 0)
         {
             if (snowball) snowball.transform.position = snowballStartingPosition;
         }
@@ -77,6 +81,13 @@ public class Player : MonoBehaviour
                 arrowState = "shoot";
                 Shoot();
             }
+        }
+
+        // Game over
+        if (PlayerPrefs.GetInt("isGameOver") == 1)
+        {
+            animator.SetBool("isThrowing", true);
+            snowball.isKinematic = false;
         }
     }
 
@@ -101,6 +112,7 @@ public class Player : MonoBehaviour
 
     public void Shoot()
     {
+        animator.SetBool("isThrowing", true);
         snowball.isKinematic = false;
         if (snowballCollider) snowballCollider.enabled = true;
         Vector3 snowballForce = new Vector3(forceMagnitude * Mathf.Cos(forceAngle), forceMagnitude * Mathf.Sin(forceAngle), 0f);
@@ -120,7 +132,20 @@ public class Player : MonoBehaviour
             // Game over
             Debug.Log("Game over!");
             gameOverText.SetActive(true);
+            animator.SetBool("playerLost", true);
             PlayerPrefs.SetInt("isGameOver", 1);
         }
+    }
+
+    public void ResetHurtAnimationCoroutine()
+    {
+        StartCoroutine(ResetHurtAnimation());
+    }
+
+    public IEnumerator ResetHurtAnimation()
+    {
+        Debug.Log("RESET isHurt Flag!!!!!");
+        yield return new WaitForSeconds(0.5f);
+        animator.SetBool("isHurt", false);
     }
 }
