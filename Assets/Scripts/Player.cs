@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
     // player
-    public KeyCode userKey;
+    public GameObject playerName;
+    public GameObject playerWinText;
+    public KeyCode playerKey;
     public int numHearts;
     public List<GameObject> hearts;
     public Animator animator;
@@ -19,7 +23,7 @@ public class Player : MonoBehaviour
     public float arrowAngleOffset;
     public float arrowTimeOffset;
     
-
+    // snowball
     public GameObject snowballPrefab;
     public GameObject snowballObject;
     public Rigidbody2D snowball;
@@ -27,12 +31,14 @@ public class Player : MonoBehaviour
     public float snowballForceMultiplier;
     public float snowballForceOffset;
     public Vector3 snowballStartingPosition;
-
     public float forceAngle;
     public float forceMagnitude;
     public float forceDirection;
 
+    // UI
     public GameObject gameOverText;
+    public GameObject player1WinsText;
+    public GameObject player2WinsText;
 
 
     // Start is called before the first frame update
@@ -41,6 +47,16 @@ public class Player : MonoBehaviour
         CreateSnowball();
         numHearts = 5;
         PlayerPrefs.SetInt("isGameOver", 0);
+        playerName.GetComponent<Text>().text = PlayerPrefs.GetString(gameObject.name + "Name");
+        if (gameObject.name == "Player1")
+        {
+            player1WinsText.GetComponent<Text>().text = PlayerPrefs.GetString(gameObject.name + "Name") + " Wins!";
+        }
+        else
+        {
+            player2WinsText.GetComponent<Text>().text = PlayerPrefs.GetString(gameObject.name + "Name") + " Wins!";
+        }
+        playerKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString(gameObject.name + "Key"));
         animator.SetBool("isThrowing", false);
         animator.SetBool("isHurt", false);
         animator.SetBool("playerLost", false);
@@ -66,7 +82,7 @@ public class Player : MonoBehaviour
         }
 
         // Get user input
-        if (Input.GetKeyDown(userKey) && PlayerPrefs.GetInt("isGameOver") == 0)
+        if (Input.GetKeyDown(playerKey) && PlayerPrefs.GetInt("isGameOver") == 0)
         {
             // Choose angle
             if (arrowState == "rotate")
@@ -130,8 +146,17 @@ public class Player : MonoBehaviour
         if (numHearts == 0)
         {
             // Game over
-            Debug.Log("Game over!");
             gameOverText.SetActive(true);
+            if (gameObject.name == "Player1")
+            {
+                player1WinsText.SetActive(false);
+                player2WinsText.SetActive(true);
+            }
+            else
+            {
+                player1WinsText.SetActive(true);
+                player2WinsText.SetActive(false);
+            }
             animator.SetBool("playerLost", true);
             PlayerPrefs.SetInt("isGameOver", 1);
         }
@@ -144,8 +169,17 @@ public class Player : MonoBehaviour
 
     public IEnumerator ResetHurtAnimation()
     {
-        Debug.Log("RESET isHurt Flag!!!!!");
         yield return new WaitForSeconds(0.5f);
         animator.SetBool("isHurt", false);
+    }
+
+    public void PlayAgain()
+    {
+        Application.LoadLevel(Application.loadedLevel);
+    }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }
