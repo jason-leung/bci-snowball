@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Snowball
+  - Powerup
   layers:
   - Default
   - TransparentFX

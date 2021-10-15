@@ -6,48 +6,70 @@ public class Snowball : MonoBehaviour
 {
     public Player currentPlayer;
     public Player otherPlayer;
+    public int snowballID = -1;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        
+        // Ignore some collisions
+        for (int i = 0; i < currentPlayer.snowballColliders.Count; i++)
+        {
+            // Ignore collisions between snowballs for current player
+            for (int j = 0; j < currentPlayer.snowballColliders.Count; j++)
+            {
+                if (currentPlayer.snowballColliders[i] && currentPlayer.snowballColliders[j])
+                    Physics2D.IgnoreCollision(currentPlayer.snowballColliders[i], currentPlayer.snowballColliders[j]);
+            }
+
+            // ignore collisions between snowballs for other player
+            for (int j = 0; j < otherPlayer.snowballColliders.Count; j++)
+            {
+                if (currentPlayer.snowballColliders[i] && otherPlayer.snowballColliders[j])
+                    Physics2D.IgnoreCollision(currentPlayer.snowballColliders[i], otherPlayer.snowballColliders[j]);
+            }
+
+            // ignore collisions between snowball and current player
+            if (currentPlayer.snowballColliders[i])
+                Physics2D.IgnoreCollision(currentPlayer.snowballColliders[i], currentPlayer.GetComponent<CapsuleCollider2D>());
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collisionObject)
     {
-        if (collisionObject.gameObject.tag == "Snowball")
+        // Deduct hearts when colliding with player
+        if (collisionObject.gameObject.tag == "Player")
         {
-            Physics2D.IgnoreCollision(collisionObject.collider, currentPlayer.snowballCollider);
+            otherPlayer.DeductHeart();
         }
-        else
+
+        // Destroy snowball
+        currentPlayer.snowballObjects[snowballID].SetActive(false);
+        Destroy(currentPlayer.snowballObjects[snowballID], 0.1f);
+        currentPlayer.snowballRigidBodies[snowballID] = null;
+        currentPlayer.snowballColliders[snowballID] = null;
+        currentPlayer.numActiveSnowballs -= 1;
+
+        // Reset state
+        if (currentPlayer.numActiveSnowballs <= 0)
         {
-            // Manage hearts
-            if (collisionObject.gameObject.tag == "Player" || ((collisionObject.gameObject.tag == "Snowball") && (otherPlayer.arrowState != "shoot")))
-            {
-                otherPlayer.DeductHeart();
-                if (otherPlayer.numHearts > 0 )
-                {
-                    otherPlayer.animator.SetBool("isHurt", true);
-                    otherPlayer.ResetHurtAnimationCoroutine();
-                }
-            }
-
-            // Destroy snowball
-            gameObject.SetActive(false);
-            Destroy(gameObject, 0.1f);
-            currentPlayer.snowball = null;
-            currentPlayer.snowballCollider = null;
-
-            // Reset state
             currentPlayer.arrowState = "rotate";
             currentPlayer.animator.SetBool("isThrowing", false);
             currentPlayer.CreateSnowball();
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collisionObject)
+    {
+        if (collisionObject.gameObject.name == "SizePowerUp")
+        {
+            currentPlayer.GetSizePowerUp();
+        }
+        else if (collisionObject.gameObject.name == "SnowballPowerUp")
+        {
+            currentPlayer.GetSnowballPowerUp();
+        }
+        else if (collisionObject.gameObject.name == "HeartPowerUp")
+        {
+            currentPlayer.AddHeart();
         }
     }
 }

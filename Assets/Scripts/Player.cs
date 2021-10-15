@@ -25,47 +25,61 @@ public class Player : MonoBehaviour
     
     // snowball
     public GameObject snowballPrefab;
-    public GameObject snowballObject;
-    public Rigidbody2D snowball;
-    public Collider2D snowballCollider;
-    public float snowballForceMultiplier;
-    public float snowballForceOffset;
-    public Vector3 snowballStartingPosition;
+    public GameObject largeSnowballPrefab;
+
+    public List<GameObject> snowballObjects;
+    public List<Rigidbody2D> snowballRigidBodies;
+    public List<Collider2D> snowballColliders;
+    public Vector3 snowballStartingPosition; 
     public float forceAngle;
     public float forceMagnitude;
-    public float forceDirection;
+    public float snowballForceMultiplier;
+    public float snowballForceOffset;
+    public float snowballForceAngleOffset = 0.2f;
+    public int numActiveSnowballs = 0;
 
     // UI
     public GameObject gameOverText;
     public GameObject player1WinsText;
     public GameObject player2WinsText;
 
+    // powerups
+    public bool hasSizePowerup;
+    public int numSnowballs;
+    public GameObject sizePowerupIcon;
+    public GameObject snowballCount;
 
     // Start is called before the first frame update
     void Start()
     {
-        CreateSnowball();
+        // game settings
         numHearts = 5;
         PlayerPrefs.SetInt("isGameOver", 0);
-        playerName.GetComponent<Text>().text = PlayerPrefs.GetString(gameObject.name + "Name");
-        if (gameObject.name == "Player1")
-        {
-            player1WinsText.GetComponent<Text>().text = PlayerPrefs.GetString(gameObject.name + "Name") + " Wins!";
-        }
-        else
-        {
-            player2WinsText.GetComponent<Text>().text = PlayerPrefs.GetString(gameObject.name + "Name") + " Wins!";
-        }
         playerKey = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString(gameObject.name + "Key"));
+
+        // powerups
+        hasSizePowerup = false;
+        numSnowballs = 1;
+
+        // UI
+        playerName.GetComponent<Text>().text = PlayerPrefs.GetString(gameObject.name + "Name");
+        if (gameObject.name == "Player1") player1WinsText.GetComponent<Text>().text = PlayerPrefs.GetString(gameObject.name + "Name") + " Wins!";
+        if (gameObject.name == "Player2") player2WinsText.GetComponent<Text>().text = PlayerPrefs.GetString(gameObject.name + "Name") + " Wins!";
+
+        // animation
         animator.SetBool("isThrowing", false);
         animator.SetBool("isHurt", false);
         animator.SetBool("playerLost", false);
+
+        // Create snowball
+        snowballObjects = new List<GameObject>();
+        snowballRigidBodies = new List<Rigidbody2D>();;
+        snowballColliders = new List<Collider2D>();
+        CreateSnowball();
     }
 
-    // Update is called once per frame
-    void Update()
+    void UpdateArrow()
     {
-        // Update arrow
         if (arrowState == "rotate")
         {
             arrow.transform.localEulerAngles = new Vector3(0, 0, Mathf.PingPong((Time.time + arrowTimeOffset) * arrowRotateSpeed, 90) + arrowAngleOffset);
@@ -74,14 +88,22 @@ public class Player : MonoBehaviour
         {
             arrow.transform.localScale = new Vector3(0.1f + Mathf.PingPong(Time.time * arrowScaleSpeed, 0.1f), arrow.transform.localScale.y, arrow.transform.localScale.z);
         }
+    }
 
-        // Update Snowball
+    void UpdateSnowball()
+    {
+        // Fix snowball at player's hand when not in shooting mode
         if (arrowState != "shoot" && PlayerPrefs.GetInt("isGameOver") == 0)
         {
-            if (snowball) snowball.transform.position = snowballStartingPosition;
+            for (int i = 0; i < snowballRigidBodies.Count; i++)
+            {
+                if (snowballRigidBodies[i])snowballRigidBodies[i].transform.position = snowballStartingPosition;
+            }
         }
+    }
 
-        // Get user input
+    void GetUserInput()
+    {
         if (Input.GetKeyDown(playerKey) && PlayerPrefs.GetInt("isGameOver") == 0)
         {
             // Choose angle
@@ -98,12 +120,28 @@ public class Player : MonoBehaviour
                 Shoot();
             }
         }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        // Update arrow
+        UpdateArrow();
+
+        // Update Snowball
+        UpdateSnowball();
+
+        // Get user input
+        GetUserInput();
 
         // Game over
         if (PlayerPrefs.GetInt("isGameOver") == 1)
         {
             animator.SetBool("isThrowing", true);
-            snowball.isKinematic = false;
+            for (int i = 0; i < snowballRigidBodies.Count; i++)
+            {
+                if (snowballRigidBodies[i]) snowballRigidBodies[i].isKinematic = false;
+            }
         }
     }
 
@@ -112,40 +150,76 @@ public class Player : MonoBehaviour
         // Destroy all existing snowballs
         foreach(GameObject snowballObj in GameObject.FindGameObjectsWithTag("Snowball"))
         {
-            if(snowballObj.name.Contains(snowballPrefab.name))
+            if (snowballObj.name.Contains(snowballPrefab.name) || snowballObj.name.Contains(largeSnowballPrefab.name))
             {
                 Destroy(snowballObj);
             }
         }
-        snowballObject = Instantiate(snowballPrefab);
-        snowballObject.SetActive(true);
-        snowball = snowballObject.GetComponent<Rigidbody2D>();
-        snowballCollider = snowball.GetComponent<Collider2D>();
-        snowballCollider.enabled = false;
+        snowballObjects.Clear();
+        snowballRigidBodies.Clear();
+        snowballColliders.Clear();
 
-        snowball.isKinematic = true;
+        // Instantiate snowballs based on powerups
+        for (int i = 0; i < numSnowballs; i++)
+        {
+            // enable game object
+            snowballObjects.Add(Instantiate(hasSizePowerup ? largeSnowballPrefab : snowballPrefab));
+            snowballObjects[i].SetActive(true);
+            snowballObjects[i].GetComponent<Snowball>().snowballID = i;
+
+            // disable rigid body
+            snowballRigidBodies.Add(snowballObjects[i].GetComponent<Rigidbody2D>());
+            snowballRigidBodies[i].isKinematic = true;
+
+            // disable collider
+            snowballColliders.Add(snowballRigidBodies[i].GetComponent<Collider2D>());
+            snowballColliders[i].enabled = false;
+        }
     }
 
     public void Shoot()
     {
         animator.SetBool("isThrowing", true);
-        snowball.isKinematic = false;
-        if (snowballCollider) snowballCollider.enabled = true;
-        Vector3 snowballForce = new Vector3(forceMagnitude * Mathf.Cos(forceAngle), forceMagnitude * Mathf.Sin(forceAngle), 0f);
-        snowball.velocity = snowballForce;
+        for (int i = 0; i < snowballRigidBodies.Count; i++)
+        {
+            // keep track of number of active snowballs
+            numActiveSnowballs = numActiveSnowballs + 1;
+
+            // enable collision physics
+            snowballRigidBodies[i].isKinematic = false; 
+            if (snowballColliders[i]) snowballColliders[i].enabled = true; 
+            
+            // Set snowball velocity
+            if (i == 0)
+            {
+                snowballRigidBodies[i].velocity = new Vector3(forceMagnitude * Mathf.Cos(forceAngle), forceMagnitude * Mathf.Sin(forceAngle), 0f);
+            }
+            else if (i == 1)
+            {
+                snowballRigidBodies[i].velocity = new Vector3(forceMagnitude * Mathf.Cos(forceAngle + snowballForceAngleOffset), forceMagnitude * Mathf.Sin(forceAngle + snowballForceAngleOffset), 0f);
+            }
+            else if (i == 2)
+            {
+                snowballRigidBodies[i].velocity = new Vector3(forceMagnitude * Mathf.Cos(forceAngle - snowballForceAngleOffset), forceMagnitude * Mathf.Sin(forceAngle - snowballForceAngleOffset), 0f);
+            }
+        }
     }
 
     public void DeductHeart()
     {
+        // Reduce hearts
         numHearts = Math.Max(0, numHearts - 1);
-        for (int i = 1; i <= 5; i++)
-        {
-            hearts[i-1].SetActive(i <= numHearts);
-        }
+        for (int i = 1; i <= 5; i++) hearts[i - 1].SetActive(i <= numHearts);
 
-        if (numHearts == 0)
+        // Player hurt
+        if (numHearts > 0)
         {
-            // Game over
+            animator.SetBool("isHurt", true);
+            ResetHurtAnimationCoroutine();
+        }
+        // Game over
+        else if (numHearts == 0)
+        {
             gameOverText.SetActive(true);
             if (gameObject.name == "Player1")
             {
@@ -162,6 +236,12 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void AddHeart()
+    {
+        numHearts = Math.Min(5, numHearts + 1);
+        for (int i = 1; i <= 5; i++) hearts[i - 1].SetActive(i <= numHearts);
+    }
+
     public void ResetHurtAnimationCoroutine()
     {
         StartCoroutine(ResetHurtAnimation());
@@ -175,11 +255,23 @@ public class Player : MonoBehaviour
 
     public void PlayAgain()
     {
-        Application.LoadLevel(Application.loadedLevel);
+        SceneManager.LoadScene("GameScene");
     }
 
     public void ReturnToMenu()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void GetSizePowerUp()
+    {
+        hasSizePowerup = true;
+        sizePowerupIcon.SetActive(true);
+    }
+
+    public void GetSnowballPowerUp()
+    {
+        numSnowballs = Math.Min(3, numSnowballs + 1);
+        snowballCount.GetComponent<Text>().text = "x " + numSnowballs.ToString() + "/3";
     }
 }

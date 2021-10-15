@@ -5,6 +5,12 @@ TextureImporter:
   - first:
       213: -8930023339860362735
     second: red_cross
+  - first:
+      213: 2036246892656419346
+    second: yellow_right
+  - first:
+      213: 7011412487406338254
+    second: yellow_left
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -114,7 +120,7 @@ TextureImporter:
         width: 130
         height: 131
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -122,6 +128,48 @@ TextureImporter:
       bones: []
       spriteID: 11afcafe51f221480800000000000000
       internalID: -8930023339860362735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yellow_right
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 960
+        width: 130
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21267c7a2c3324c10800000000000000
+      internalID: 2036246892656419346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yellow_left
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 811
+        width: 130
+        height: 129
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec0c79d528a8d4160800000000000000
+      internalID: 7011412487406338254
       vertices: []
       indices: 
       edges: []
