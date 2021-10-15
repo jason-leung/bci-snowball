@@ -130,6 +130,12 @@ public class Player : MonoBehaviour
                 Shoot();
             }
         }
+
+        // Quit to Main Menu
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
     // Update is called once per frame
