@@ -27,8 +27,11 @@ public class Controls : MonoBehaviour
             {
                 if (Input.GetKey(vKey))
                 {
-                    // Set player prefs
-                    PlayerPrefs.SetString("Player1Key", vKey.ToString());
+                    if (vKey != KeyCode.Escape && vKey != KeyCode.Mouse0)
+                    {
+                        // Set player prefs
+                        PlayerPrefs.SetString("Player1Key", vKey.ToString());
+                    }
                     // Set button text
                     p1KeyButtonText.GetComponent<Text>().text = PlayerPrefs.GetString("Player1Key");
                     // reset state

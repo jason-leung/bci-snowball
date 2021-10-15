@@ -49,6 +49,15 @@ public class Player : MonoBehaviour
     public GameObject sizePowerupIcon;
     public GameObject snowballCount;
 
+    // audio
+    public AudioSource chooseSound;
+    public AudioSource shootSound;
+    public AudioSource sizePowerupSound;
+    public AudioSource snowballPowerupSound;
+    public AudioSource snowballHitSound;
+    public AudioSource heartSound;
+    public AudioSource winSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -111,6 +120,7 @@ public class Player : MonoBehaviour
             {
                 forceAngle = (Mathf.PingPong((Time.time + arrowTimeOffset) * arrowRotateSpeed, 90) + arrowAngleOffset) / 180f * Mathf.PI;
                 arrowState = "scale";
+                chooseSound.Play();
             }
             // Choose scale
             else if (arrowState == "scale")
@@ -180,6 +190,7 @@ public class Player : MonoBehaviour
     public void Shoot()
     {
         animator.SetBool("isThrowing", true);
+        shootSound.Play();
         for (int i = 0; i < snowballRigidBodies.Count; i++)
         {
             // keep track of number of active snowballs
@@ -233,6 +244,7 @@ public class Player : MonoBehaviour
             }
             animator.SetBool("playerLost", true);
             PlayerPrefs.SetInt("isGameOver", 1);
+            winSound.Play();
         }
     }
 
@@ -240,6 +252,7 @@ public class Player : MonoBehaviour
     {
         numHearts = Math.Min(5, numHearts + 1);
         for (int i = 1; i <= 5; i++) hearts[i - 1].SetActive(i <= numHearts);
+        heartSound.Play();
     }
 
     public void ResetHurtAnimationCoroutine()
@@ -267,11 +280,13 @@ public class Player : MonoBehaviour
     {
         hasSizePowerup = true;
         sizePowerupIcon.SetActive(true);
+        sizePowerupSound.Play();
     }
 
     public void GetSnowballPowerUp()
     {
         numSnowballs = Math.Min(3, numSnowballs + 1);
         snowballCount.GetComponent<Text>().text = "x " + numSnowballs.ToString() + "/3";
+        snowballPowerupSound.Play();
     }
 }

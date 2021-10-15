@@ -35,6 +35,8 @@ public class Snowball : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collisionObject)
     {
+        currentPlayer.snowballHitSound.Play();
+
         // Deduct hearts when colliding with player
         if (collisionObject.gameObject.tag == "Player")
         {

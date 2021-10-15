@@ -12,10 +12,14 @@ public class MainMenu : MonoBehaviour
     public GameObject pageNumber;
     public List<GameObject> pages;
 
+    public GameObject creditsPanel;
+
+    public AudioSource chooseSound;
+
     // Start is called before the first frame update
     void Start()
     {
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
         if (!PlayerPrefs.HasKey("Player1Name")) PlayerPrefs.SetString("Player1Name", "Player1");
         if (!PlayerPrefs.HasKey("Player2Name")) PlayerPrefs.SetString("Player2Name", "Player2");
         if (!PlayerPrefs.HasKey("Player1Key")) PlayerPrefs.SetString("Player1Key", KeyCode.Alpha1.ToString());
@@ -77,5 +81,15 @@ public class MainMenu : MonoBehaviour
             pages[1].SetActive(true);
             nextPageButton.SetActive(true);
         }
+    }
+
+    public void PlayChooseSound()
+    {
+        chooseSound.Play();
+    }
+
+    public void Credits()
+    {
+        creditsPanel.SetActive(!creditsPanel.activeSelf);
     }
 }
