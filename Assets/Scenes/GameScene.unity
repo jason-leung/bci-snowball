@@ -2799,8 +2799,8 @@ MonoBehaviour:
   animator: {fileID: 688929252}
   arrow: {fileID: 1041066099}
   arrowState: rotate
-  arrowRotateSpeed: 60
-  arrowScaleSpeed: 0.1
+  arrowRotateSpeed: 40
+  arrowScaleSpeed: 0.08
   arrowAngleOffset: 0
   arrowTimeOffset: 0
   snowballPrefab: {fileID: 97158875}
@@ -5379,8 +5379,8 @@ MonoBehaviour:
   animator: {fileID: 1336968080}
   arrow: {fileID: 2137686742}
   arrowState: rotate
-  arrowRotateSpeed: 60
-  arrowScaleSpeed: 0.1
+  arrowRotateSpeed: 40
+  arrowScaleSpeed: 0.08
   arrowAngleOffset: 90
   arrowTimeOffset: 1.5
   snowballPrefab: {fileID: 2090562801}
@@ -7284,6 +7284,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1769984736}
+  - component: {fileID: 1769984737}
   m_Layer: 0
   m_Name: Sound
   m_TagString: Untagged
@@ -7313,6 +7314,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1769984737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769984735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b821d473e94b91b46bea48471e2b2f19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sound: {fileID: 1769984735}
 --- !u!1 &1897765038
 GameObject:
   m_ObjectHideFlags: 0

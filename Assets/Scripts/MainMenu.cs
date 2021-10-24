@@ -16,6 +16,11 @@ public class MainMenu : MonoBehaviour
 
     public AudioSource chooseSound;
 
+    public GameObject soundObject;
+    public GameObject muteButton;
+    public Sprite soundOnSprite;
+    public Sprite soundOffSprite;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +29,16 @@ public class MainMenu : MonoBehaviour
         if (!PlayerPrefs.HasKey("Player2Name")) PlayerPrefs.SetString("Player2Name", "Player2");
         if (!PlayerPrefs.HasKey("Player1Key")) PlayerPrefs.SetString("Player1Key", KeyCode.Alpha1.ToString());
         if (!PlayerPrefs.HasKey("Player2Key")) PlayerPrefs.SetString("Player2Key", KeyCode.Alpha2.ToString());
+
+        if (!PlayerPrefs.HasKey("SoundOn")) PlayerPrefs.SetInt("SoundOn", 1);
+        if (PlayerPrefs.GetInt("SoundOn") == 1)
+        {
+            muteButton.GetComponent<Image>().sprite = soundOnSprite;
+        }
+        else
+        {
+            muteButton.GetComponent<Image>().sprite = soundOffSprite;
+        }
     }
 
     public void StartGame()
@@ -91,5 +106,21 @@ public class MainMenu : MonoBehaviour
     public void Credits()
     {
         creditsPanel.SetActive(!creditsPanel.activeSelf);
+    }
+
+    public void toggleSound()
+    {
+        if (soundObject.activeSelf)
+        {
+            PlayerPrefs.SetInt("SoundOn", 0);
+            soundObject.SetActive(!soundObject.activeSelf);
+            muteButton.GetComponent<Image>().sprite = soundOffSprite;
+        }
+        else
+        {
+            PlayerPrefs.SetInt("SoundOn", 1);
+            soundObject.SetActive(!soundObject.activeSelf);
+            muteButton.GetComponent<Image>().sprite = soundOnSprite;
+        }
     }
 }

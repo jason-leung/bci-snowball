@@ -14,6 +14,12 @@ TextureImporter:
   - first:
       213: 2072855680864953843
     second: red_question_mark
+  - first:
+      213: -7747287092744849336
+    second: Sound_ON
+  - first:
+      213: -7241619090847814304
+    second: Sound_OFF
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -186,7 +192,7 @@ TextureImporter:
         width: 131
         height: 129
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -194,6 +200,48 @@ TextureImporter:
       bones: []
       spriteID: 3f52b90624344cc10800000000000000
       internalID: 2072855680864953843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sound_ON
+      rect:
+        serializedVersion: 2
+        x: 737
+        y: 1848
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84879ff9f6b1c7490800000000000000
+      internalID: -7747287092744849336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sound_OFF
+      rect:
+        serializedVersion: 2
+        x: 737
+        y: 1699
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06d245bfdc9908b90800000000000000
+      internalID: -7241619090847814304
       vertices: []
       indices: 
       edges: []
