@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
     public GameObject gameOverText;
     public GameObject player1WinsText;
     public GameObject player2WinsText;
+    public List<GameObject> playerButtons;
 
     // powerups
     public bool hasSizePowerup;
@@ -58,6 +59,11 @@ public class Player : MonoBehaviour
     public AudioSource heartSound;
     public AudioSource winSound;
 
+    // P300
+    [SerializeField] P300_Controller p300_Controller;
+    public GameObject markerStreams;
+    public GameObject p300_Controller_Object;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -71,9 +77,25 @@ public class Player : MonoBehaviour
         numSnowballs = 1;
 
         // UI
+        print(gameObject.name + "Name");
+        print(PlayerPrefs.GetString(gameObject.name + "Name"));
         playerName.GetComponent<Text>().text = PlayerPrefs.GetString(gameObject.name + "Name");
         if (gameObject.name == "Player1") player1WinsText.GetComponent<Text>().text = PlayerPrefs.GetString(gameObject.name + "Name") + " Wins!";
         if (gameObject.name == "Player2") player2WinsText.GetComponent<Text>().text = PlayerPrefs.GetString(gameObject.name + "Name") + " Wins!";
+        for (int i = 0; i < playerButtons.Count; i++)
+        {
+            playerButtons[i].SetActive(PlayerPrefs.GetInt("UseP300Controls") == 1);
+        }
+        if (PlayerPrefs.GetInt("UseP300Controls") == 1)
+        {
+            arrow.transform.localEulerAngles = new Vector3(0f, 0f, arrow.transform.localEulerAngles.z + arrowAngleOffset);
+        }
+        markerStreams.SetActive(PlayerPrefs.GetInt("UseP300Controls") == 1);
+        p300_Controller_Object.SetActive(PlayerPrefs.GetInt("UseP300Controls") == 1);
+
+        // Physics
+        forceAngle = arrow.transform.localEulerAngles.z / 180f * Mathf.PI;
+        forceMagnitude = arrow.transform.localScale.x * snowballForceMultiplier - snowballForceOffset;
 
         // animation
         animator.SetBool("isThrowing", false);
@@ -85,35 +107,57 @@ public class Player : MonoBehaviour
         snowballRigidBodies = new List<Rigidbody2D>();;
         snowballColliders = new List<Collider2D>();
         CreateSnowball();
+
+        // Trigger P300 flashes
+        p300_Controller = FindObjectOfType<P300_Controller>();
+        if (PlayerPrefs.GetInt("UseP300Controls") == 1 && arrowState != "shoot")
+        {
+            p300_Controller.RunSingleFlash();
+        }
+    }
+
+    private void Awake()
+    {
+        p300_Controller = FindObjectOfType<P300_Controller>();
     }
 
     void UpdateArrow()
     {
-        if (arrowState == "rotate")
+        if (PlayerPrefs.GetInt("UseP300Controls") == 0)
         {
-            arrow.transform.localEulerAngles = new Vector3(0, 0, Mathf.PingPong((Time.time + arrowTimeOffset) * arrowRotateSpeed, 90) + arrowAngleOffset);
-        }
-        else if (arrowState == "scale")
-        {
-            arrow.transform.localScale = new Vector3(0.1f + Mathf.PingPong(Time.time * arrowScaleSpeed, 0.1f), arrow.transform.localScale.y, arrow.transform.localScale.z);
+            if (arrowState == "rotate")
+            {
+                arrow.transform.localEulerAngles = new Vector3(0, 0, Mathf.PingPong((Time.time + arrowTimeOffset) * arrowRotateSpeed, 90) + arrowAngleOffset);
+            }
+            else if (arrowState == "scale")
+            {
+                arrow.transform.localScale = new Vector3(0.1f + Mathf.PingPong(Time.time * arrowScaleSpeed, 0.1f), arrow.transform.localScale.y, arrow.transform.localScale.z);
+            }
         }
     }
 
     void UpdateSnowball()
     {
         // Fix snowball at player's hand when not in shooting mode
-        if (arrowState != "shoot" && PlayerPrefs.GetInt("isGameOver") == 0)
+        if (PlayerPrefs.GetInt("UseP300Controls") == 0 && arrowState != "shoot" && PlayerPrefs.GetInt("isGameOver") == 0)
         {
             for (int i = 0; i < snowballRigidBodies.Count; i++)
             {
                 if (snowballRigidBodies[i])snowballRigidBodies[i].transform.position = snowballStartingPosition;
             }
         }
+        if (PlayerPrefs.GetInt("UseP300Controls") == 1 && arrowState != "shoot" && PlayerPrefs.GetInt("isGameOver") == 0)
+        {
+            for (int i = 0; i < snowballRigidBodies.Count; i++)
+            {
+                if (snowballRigidBodies[i]) snowballRigidBodies[i].transform.position = snowballStartingPosition;
+            }
+        }
     }
 
     void GetUserInput()
     {
-        if (Input.GetKeyDown(playerKey) && PlayerPrefs.GetInt("isGameOver") == 0)
+        if (PlayerPrefs.GetInt("UseP300Controls") == 0 && Input.GetKeyDown(playerKey) && PlayerPrefs.GetInt("isGameOver") == 0)
         {
             // Choose angle
             if (arrowState == "rotate")
@@ -149,6 +193,34 @@ public class Player : MonoBehaviour
 
         // Get user input
         GetUserInput();
+
+        // Trigger P300 flashes
+        if (PlayerPrefs.GetInt("UseP300Controls") == 1 && arrowState != "shoot" && !p300_Controller.singleFlash.startFlashes)
+        {
+            p300_Controller.RunSingleFlash();
+        }
+
+        // DEBUG P300
+        //if (Input.GetKeyDown(KeyCode.W))
+        //{
+        //    P300_More();
+        //}
+        //else if (Input.GetKeyDown(KeyCode.S))
+        //{
+        //    P300_Less();
+        //}
+        //else if (Input.GetKeyDown(KeyCode.A))
+        //{
+        //    P300_Up();
+        //}
+        //else if (Input.GetKeyDown(KeyCode.D))
+        //{
+        //    P300_Down();
+        //}
+        //else if (Input.GetKeyDown(KeyCode.Return))
+        //{
+        //    P300_Shoot();
+        //}
 
         // Game over
         if (PlayerPrefs.GetInt("isGameOver") == 1)
@@ -203,7 +275,7 @@ public class Player : MonoBehaviour
             numActiveSnowballs = numActiveSnowballs + 1;
 
             // enable collision physics
-            snowballRigidBodies[i].isKinematic = false; 
+            if (snowballRigidBodies[i]) snowballRigidBodies[i].isKinematic = false; 
             if (snowballColliders[i]) snowballColliders[i].enabled = true; 
             
             // Set snowball velocity
@@ -294,5 +366,76 @@ public class Player : MonoBehaviour
         numSnowballs = Math.Min(3, numSnowballs + 1);
         snowballCount.GetComponent<Text>().text = "x " + numSnowballs.ToString() + "/3";
         snowballPowerupSound.Play();
+    }
+
+    public void P300_Up()
+    {
+        if (PlayerPrefs.GetInt("UseP300Controls") == 1 && PlayerPrefs.GetInt("isGameOver") == 0)
+        {
+            float rotation;
+            if (arrowAngleOffset == 0)
+            {
+                rotation = Math.Min(arrow.transform.localEulerAngles.z + 15f, 90f);
+            }
+            else
+            {
+                rotation = Math.Max(arrow.transform.localEulerAngles.z - 15f, 90f);
+            }
+            arrow.transform.localEulerAngles = new Vector3(0, 0, rotation);
+            forceAngle = rotation / 180f * Mathf.PI;
+            chooseSound.Play();
+        }
+    }
+
+    public void P300_Down()
+    {
+        if (PlayerPrefs.GetInt("UseP300Controls") == 1 && PlayerPrefs.GetInt("isGameOver") == 0)
+        {
+            float rotation;
+            if (arrowAngleOffset == 0)
+            {
+                rotation = Math.Max(arrow.transform.localEulerAngles.z - 15f, 0f);
+            }
+            else
+            {
+                rotation = Math.Min(arrow.transform.localEulerAngles.z + 15f, 180f);
+            }
+            arrow.transform.localEulerAngles = new Vector3(0, 0, rotation);
+            forceAngle = rotation / 180f * Mathf.PI;
+            chooseSound.Play();
+        }
+    }
+
+    public void P300_More()
+    {
+        if (PlayerPrefs.GetInt("UseP300Controls") == 1 && PlayerPrefs.GetInt("isGameOver") == 0)
+        {
+            float scale;
+            scale = Math.Min(arrow.transform.localScale.x + 0.01f, 0.2f);
+            arrow.transform.localScale = new Vector3(scale, arrow.transform.localScale.y, arrow.transform.localScale.z);
+            forceMagnitude = arrow.transform.localScale.x * snowballForceMultiplier - snowballForceOffset;
+            chooseSound.Play();
+        }
+    }
+
+    public void P300_Less()
+    {
+        if (PlayerPrefs.GetInt("UseP300Controls") == 1 && PlayerPrefs.GetInt("isGameOver") == 0)
+        {
+            float scale;
+            scale = Math.Max(arrow.transform.localScale.x - 0.01f, 0.1f);
+            arrow.transform.localScale = new Vector3(scale, arrow.transform.localScale.y, arrow.transform.localScale.z);
+            forceMagnitude = arrow.transform.localScale.x * snowballForceMultiplier - snowballForceOffset;
+            chooseSound.Play();
+        }
+    }
+
+    public void P300_Shoot()
+    {
+        if (PlayerPrefs.GetInt("UseP300Controls") == 1 && arrowState != "shoot" && PlayerPrefs.GetInt("isGameOver") == 0)
+        {
+            arrowState = "shoot";
+            Shoot();
+        }
     }
 }

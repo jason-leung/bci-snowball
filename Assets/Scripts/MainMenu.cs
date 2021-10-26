@@ -29,6 +29,9 @@ public class MainMenu : MonoBehaviour
         if (!PlayerPrefs.HasKey("Player2Name")) PlayerPrefs.SetString("Player2Name", "Player2");
         if (!PlayerPrefs.HasKey("Player1Key")) PlayerPrefs.SetString("Player1Key", KeyCode.Alpha1.ToString());
         if (!PlayerPrefs.HasKey("Player2Key")) PlayerPrefs.SetString("Player2Key", KeyCode.Alpha2.ToString());
+        if (!PlayerPrefs.HasKey("UseP300Controls")) PlayerPrefs.SetInt("UseP300Controls", 0);
+        PlayerPrefs.SetInt("isGameOver", 0);
+        //PlayerPrefs.SetInt("UseP300Controls", 1); // DEBUG
 
         if (!PlayerPrefs.HasKey("SoundOn")) PlayerPrefs.SetInt("SoundOn", 1);
         if (PlayerPrefs.GetInt("SoundOn") == 1)

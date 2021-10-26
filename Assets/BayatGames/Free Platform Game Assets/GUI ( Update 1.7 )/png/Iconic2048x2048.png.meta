@@ -20,6 +20,36 @@ TextureImporter:
   - first:
       213: -7241619090847814304
     second: Sound_OFF
+  - first:
+      213: 8498933772477381437
+    second: red_plus
+  - first:
+      213: -8400622410092147034
+    second: red_minus
+  - first:
+      213: 6073536667876728688
+    second: blue_plus
+  - first:
+      213: 2073289690854212600
+    second: blue_minus
+  - first:
+      213: -244570013963071155
+    second: red_check
+  - first:
+      213: 2294963774762841369
+    second: blue_check
+  - first:
+      213: -5968572204171906042
+    second: red_up
+  - first:
+      213: -4488157658711415668
+    second: red_down
+  - first:
+      213: -2943363848929813722
+    second: blue_up
+  - first:
+      213: 8394794552422958212
+    second: blue_down
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -213,7 +243,7 @@ TextureImporter:
         width: 130
         height: 130
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -234,7 +264,7 @@ TextureImporter:
         width: 130
         height: 130
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -242,6 +272,216 @@ TextureImporter:
       bones: []
       spriteID: 06d245bfdc9908b90800000000000000
       internalID: -7241619090847814304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: red_plus
+      rect:
+        serializedVersion: 2
+        x: 737
+        y: 515
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3bb51e9c3742f570800000000000000
+      internalID: 8498933772477381437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: red_minus
+      rect:
+        serializedVersion: 2
+        x: 738
+        y: 367
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ae854a2d6efa6b80800000000000000
+      internalID: -8400622410092147034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_plus
+      rect:
+        serializedVersion: 2
+        x: 1181
+        y: 515
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 07f1a13ab69894450800000000000000
+      internalID: 6073536667876728688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_minus
+      rect:
+        serializedVersion: 2
+        x: 1181
+        y: 367
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f348d33dfdc5cc10800000000000000
+      internalID: 2073289690854212600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: red_check
+      rect:
+        serializedVersion: 2
+        x: 737
+        y: 71
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d41d40b3edc1b9cf0800000000000000
+      internalID: -244570013963071155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_check
+      rect:
+        serializedVersion: 2
+        x: 1181
+        y: 71
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 915f027d46959df10800000000000000
+      internalID: 2294963774762841369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: red_up
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 664
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6043012043f5b2da0800000000000000
+      internalID: -5968572204171906042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: red_down
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 515
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c84ae80836cd6b1c0800000000000000
+      internalID: -4488157658711415668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_up
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 663
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62bdfcb8c221727d0800000000000000
+      internalID: -2943363848929813722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: blue_down
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 515
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4840e8bfa2d408470800000000000000
+      internalID: 8394794552422958212
       vertices: []
       indices: 
       edges: []

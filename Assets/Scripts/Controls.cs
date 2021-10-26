@@ -16,6 +16,7 @@ public class Controls : MonoBehaviour
     public GameObject p1KeyButtonText;
     public GameObject p2KeyButtonText;
     public GameObject warningText;
+    public GameObject useP300ControlsToggle;
 
     public int recordKey = 0;
 
@@ -27,7 +28,7 @@ public class Controls : MonoBehaviour
             {
                 if (Input.GetKey(vKey))
                 {
-                    if (vKey != KeyCode.Escape && vKey != KeyCode.Mouse0)
+                    if (vKey != KeyCode.Escape && vKey != KeyCode.Mouse0 && vKey != KeyCode.P)
                     {
                         // Set player prefs
                         PlayerPrefs.SetString("Player1Key", vKey.ToString());
@@ -64,20 +65,26 @@ public class Controls : MonoBehaviour
         warningText.SetActive(false);
 
         // Set player name and key
-        p1NameInputField.GetComponent<Text>().text = PlayerPrefs.GetString("Player1Name");
-        p2NameInputField.GetComponent<Text>().text = PlayerPrefs.GetString("Player2Name");
+        print(PlayerPrefs.GetString("Player1Name"));
+        print(PlayerPrefs.GetString("Player2Name"));
+        p1NameInputField.GetComponent<InputField>().text = PlayerPrefs.GetString("Player1Name");
+        p2NameInputField.GetComponent<InputField>().text = PlayerPrefs.GetString("Player2Name");
         p1KeyButtonText.GetComponent<Text>().text = PlayerPrefs.GetString("Player1Key");
         p2KeyButtonText.GetComponent<Text>().text = PlayerPrefs.GetString("Player2Key");
-
+        useP300ControlsToggle.GetComponent<Toggle>().isOn = PlayerPrefs.GetInt("UseP300Controls") == 1;
     }
 
     public void ExitControlsPanel()
     {
         // check names
-        p1Name = p1NameInputField.GetComponent<Text>().text;
-        p2Name = p2NameInputField.GetComponent<Text>().text;
+        p1Name = p1NameInputField.GetComponent<InputField>().text;
+        p2Name = p2NameInputField.GetComponent<InputField>().text;
+        print("p1Name: " + p1Name);
+        print("p2Name: " + p2Name);
         if (p1Name == "") p1Name = "Player 1";
         if (p2Name == "") p2Name = "Player 2";
+        print("p1Name: " + p1Name);
+        print("p2Name: " + p2Name);
 
         // check keys
         p1Key = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("Player1Key"));
@@ -90,8 +97,8 @@ public class Controls : MonoBehaviour
         }
         else
         {
-            PlayerPrefs.SetString("Player1Name", p1NameInputField.GetComponent<Text>().text);
-            PlayerPrefs.SetString("Player2Name", p2NameInputField.GetComponent<Text>().text);
+            PlayerPrefs.SetString("Player1Name", p1Name);
+            PlayerPrefs.SetString("Player2Name", p2Name);
             warningText.SetActive(false);
             controlsPanel.SetActive(false);
         }
@@ -111,5 +118,10 @@ public class Controls : MonoBehaviour
             p1KeyButtonText.GetComponent<Text>().text = PlayerPrefs.GetString("Player1Key"); 
             p2KeyButtonText.GetComponent<Text>().text = "Recording...";
         }
+    }
+
+    public void ToggleP300Controls()
+    {
+        PlayerPrefs.SetInt("UseP300Controls", useP300ControlsToggle.GetComponent<Toggle>().isOn ? 1 : 0);
     }
 }
